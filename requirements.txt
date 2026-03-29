@@ -1,0 +1,9 @@
+Django>=5.0,<5.1
+djangorestframework
+djangorestframework-simplejwt
+psycopg2-binary
+Pillow
+django-cors-headers
+python-dotenv
+django-encrypted-model-fields
+cryptography
