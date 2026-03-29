@@ -22,8 +22,9 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    # This tells Django: "Any URL starting with api/v1/auth/, look in the accounts app"
     path('api/v1/auth/', include('apps.accounts.urls')),
+    path('api/v1/verification/', include('apps.verification.urls')),
+    path('api/v1/listings/', include('apps.listings.urls')),
 ]
 
 # This allows us to view uploaded images locally during development

@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     # Local apps
     'apps.accounts',
     'apps.verification',
+    'apps.listings',
 ]
 
 MIDDLEWARE = [
