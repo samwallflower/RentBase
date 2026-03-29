@@ -1,7 +1,7 @@
 from django.test import TestCase
-from accounts.models import User
-from verification.models import UserVerification
-from verification.permissions import IsVerified
+from apps.accounts.models import User
+from apps.verification.models import UserVerification
+from apps.verification.permissions import IsVerified
 from unittest.mock import MagicMock
 
 

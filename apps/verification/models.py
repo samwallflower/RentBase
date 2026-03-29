@@ -1,7 +1,7 @@
 import uuid
 from django.db import models
 from encrypted_model_fields.fields import EncryptedCharField
-from accounts.models import User, TimeStampedModel
+from apps.accounts.models import User, TimeStampedModel
 
 class UserVerification(TimeStampedModel):
     STATUS_CHOICES = [

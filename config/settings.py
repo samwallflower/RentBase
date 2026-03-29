@@ -21,7 +21,8 @@ INSTALLED_APPS = [
     'encrypted_model_fields',
 
     # Local apps
-    'accounts',
+    'apps.accounts',
+    'apps.verification',
 ]
 
 MIDDLEWARE = [
