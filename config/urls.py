@@ -25,6 +25,7 @@ urlpatterns = [
     path('api/v1/auth/', include('apps.accounts.urls')),
     path('api/v1/verification/', include('apps.verification.urls')),
     path('api/v1/listings/', include('apps.listings.urls')),
+    path('api/v1/payments/', include('apps.payments.urls')),
 ]
 
 # This allows us to view uploaded images locally during development

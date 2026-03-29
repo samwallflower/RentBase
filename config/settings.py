@@ -7,7 +7,7 @@ load_dotenv()  # Load environment variables from .env file
 BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
 STRIPE_SECRET_KEY = os.getenv('STRIPE_SECRET_KEY')
-STRIPE_IDENTITY_WEBHOOK_SECRET = os.getenv('STRIPE_IDENTITY_WEBHOOK_SECRET')
+STRIPE_WEBHOOK_SECRET = os.getenv('STRIPE_WEBHOOK_SECRET')
 DEBUG = os.getenv('DJANGO_DEBUG')
 allowed_hosts_env = os.getenv('DJANGO_ALLOWED_HOSTS')
 ALLOWED_HOSTS = allowed_hosts_env.split(',') if allowed_hosts_env else []
@@ -29,6 +29,8 @@ INSTALLED_APPS = [
     'apps.accounts',
     'apps.verification',
     'apps.listings',
+    'apps.bookings',
+    'apps.payments'
 ]
 
 MIDDLEWARE = [
@@ -63,11 +65,14 @@ ROOT_URLCONF = 'config.urls'
 # Custom User Model
 AUTH_USER_MODEL = 'accounts.User'
 
-# We will use SQLite for Phase 1 testing, then swap to Postgres in Phase 2
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.getenv('DB_NAME'),
+        'USER': os.getenv('DB_USER'),
+        'PASSWORD': os.getenv('DB_PASSWORD'),
+        'HOST': os.getenv('DB_HOST'),
+        'PORT': os.getenv('DB_PORT'),
     }
 }
 
