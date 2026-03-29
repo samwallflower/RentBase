@@ -1,0 +1,22 @@
+# created by virtualenv automatically
+# Python
+__pycache__/
+*.pyc
+
+# Django
+db.sqlite3
+*.log
+
+# Environment variables
+.env
+
+# Virtual environment
+.venv/
+env/
+
+# IDE
+.idea/
+.vscode/
+
+# OS files
+.DS_Store

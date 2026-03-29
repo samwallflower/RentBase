@@ -1,7 +1,7 @@
 import uuid
 from django.db import models
-from encrypted_model_fields.fields import EncryptedCharField
 from apps.accounts.models import User, TimeStampedModel
+
 
 class UserVerification(TimeStampedModel):
     STATUS_CHOICES = [
@@ -13,17 +13,36 @@ class UserVerification(TimeStampedModel):
     ]
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    # Links this verification record directly to a specific user
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='not_started')
 
-    # We will get this from Stripe later
+    # Stripe References (No PII)
     stripe_session_id = models.CharField(max_length=200, null=True, blank=True)
+    stripe_report_id = models.CharField(max_length=200, null=True, blank=True)
 
-    # --- SECURE ENCRYPTED FIELDS ---
-    legal_first_name = EncryptedCharField(max_length=200, null=True, blank=True)
-    legal_last_name = EncryptedCharField(max_length=200, null=True, blank=True)
-    id_document_number = EncryptedCharField(max_length=100, null=True, blank=True)
+    # GDPR Consent & Audit
+    tos_accepted_at = models.DateTimeField(null=True, blank=True)
+    tos_ip_address = models.GenericIPAddressField(null=True, blank=True)
+    submitted_at = models.DateTimeField(null=True, blank=True)
+    verified_at = models.DateTimeField(null=True, blank=True)
+    rejection_reason = models.CharField(max_length=200, null=True, blank=True)
+
+    @property
+    def stripe_dashboard_url(self):
+        if self.stripe_session_id:
+            return f"https://dashboard.stripe.com/identity/verification_sessions/{self.stripe_session_id}"
+        return None
 
     def __str__(self):
         return f"Verification for {self.user.email} - {self.status}"
+
+
+class VerificationAccessLog(TimeStampedModel):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    verification = models.ForeignKey(UserVerification, on_delete=models.CASCADE)
+    accessed_by = models.ForeignKey(User, on_delete=models.CASCADE)
+    reason = models.TextField()
+    booking_ref_id = models.UUIDField(null=True, blank=True)
+
+    def __str__(self):
+        return f"Accessed by {self.accessed_by.email} on {self.created_at}"
