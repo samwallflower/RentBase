@@ -1,10 +1,16 @@
 import os
 from pathlib import Path
+from dotenv import load_dotenv
+
+load_dotenv()  # Load environment variables from .env file
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-SECRET_KEY = 'django-insecure-4#k-j@2s_brt(0(vqm*(g+1)l1j2#4gen5qanc5^io1mdb_0eg'
-DEBUG = True
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
+STRIPE_SECRET_KEY = os.getenv('STRIPE_SECRET_KEY')
+STRIPE_IDENTITY_WEBHOOK_SECRET = os.getenv('STRIPE_IDENTITY_WEBHOOK_SECRET')
+DEBUG = os.getenv('DJANGO_DEBUG')
+allowed_hosts_env = os.getenv('DJANGO_ALLOWED_HOSTS')
+ALLOWED_HOSTS = allowed_hosts_env.split(',') if allowed_hosts_env else []
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -18,7 +24,6 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
     'corsheaders',
-    'encrypted_model_fields',
 
     # Local apps
     'apps.accounts',
@@ -78,6 +83,3 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
 }
-
-# Dummy key for development - must match format for django-encrypted-model-fields
-FIELD_ENCRYPTION_KEY = b'xO1k4JpE0_2A_cM5T-pYvV8d8F1b_hC3aZlIqT6wGzY='
